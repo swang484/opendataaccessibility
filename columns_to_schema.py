@@ -7,6 +7,8 @@ type_convert = {
     "number": "FLOAT"
 }
 
+def test():
+    return "test"
 
 def form_schema(domain: str, uuid: str, table_name: str = None) -> str:
     metadata = requests.get(f"https://{domain}/views/{uuid}.json")
