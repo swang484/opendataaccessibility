@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
+import axios from 'axios'
 import './App.css';
 
 function App() {
@@ -8,16 +9,37 @@ function App() {
   const [question, setQuestion] = useState('');
   const [output, setOutput] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Example: just combine inputs (replace with real API call)
-    setOutput(`Domain: ${domain}\nCode: ${code}\nQuestion: ${question}`);
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/convertSQL', {
+        domain,
+        code,
+        question
+      });
+      setOutput(response.data);
+      console.log(response.data);
+    } catch (error) {
+      setOutput({ error: error.message });
+    }
   };
+
+  // Helper: is output an array of objects?
+  const isTableData = Array.isArray(output) &&
+    output.length > 0 &&
+    typeof output[0] === 'object' &&
+    !Array.isArray(output[0]);
+
+  let headers = [];
+  if (isTableData) {
+    headers = Object.keys(output[0]);
+  }
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <p></p>
+        <img src={"https://opendata.cityofnewyork.us/wp-content/themes/opendata-wp/assets/img/nyc-open-data-logo.svg"} className="App-logo" alt="logo" />
         <h1 className="App-title"><b>Open Data Accessibility Project</b></h1>
         <form className="App-form" onSubmit={handleSubmit}>
           <input
@@ -44,7 +66,29 @@ function App() {
           <button className="App-button" type="submit">Submit</button>
         </form>
         <div className="App-output-container">
-          <pre className="App-output">{output}</pre>
+          <div>Result</div>
+          {isTableData ? (
+            <table>
+              <thead>
+                <tr>
+                  {headers.map((header) => <th key={header}>{header}</th>)}
+                </tr>
+              </thead>
+              <tbody>
+                {output.map((row, idx) => (
+                  <tr key={idx}>
+                    {headers.map((header) => (
+                      <td key={header}>{row[header]}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : output && (
+            <pre className="App-output">
+              {typeof output === "object" ? JSON.stringify(output, null, 2) : output}
+            </pre>
+          )}
         </div>
       </header>
     </div>
