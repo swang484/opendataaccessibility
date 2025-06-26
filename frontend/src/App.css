@@ -3,7 +3,8 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 100px;
+  margin-bottom: 16px;
   pointer-events: none;
 }
 
@@ -19,19 +20,73 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding-top: 32px;
 }
 
-.App-link {
+.App-title {
+  font-weight: bold;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+.App-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 320px;
+  max-width: 90vw;
+  margin: 0 auto 24px auto;
+}
+
+.App-input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.App-button {
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  background-color: #61dafb;
+  color: #282c34;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.App-button:hover {
+  background-color: #21a1f3;
+}
+
+.App-output-container {
+  background: #222;
   color: #61dafb;
+  margin-top: 24px;
+  padding: 16px;
+  border-radius: 8px;
+  min-height: 60px;
+  width: 350px;
+  max-width: 90vw;
+}
+
+.App-output {
+  text-align: left;
+  white-space: pre-wrap;
+  font-size: 1rem;
+  margin: 0;
 }
 
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
