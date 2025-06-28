@@ -31,10 +31,14 @@ def convertSQL():
 
   prompt = f"""
   Generate a SQL query to answer this question: [QUESTION]{question}[/QUESTION]. Do not change the prompt.
-  Write in plain text without any formatting. DO NOT RESPOND WITH ANYTHING EXCEPT THE SQL COMMAND!!!!
+  Write in plain text without any formatting. RESPOND WITH THE SQL QUERY AND THE SQL QUERY ONLY! 
+  The table name is df. If you use a table name other than df, you will die.
+  Double check that all the column names are ACTUALLY column names in the dataframe and they are all spelled correctly.
+  Do not use VARCHARs, as the database management system I am using cannot parse VARCHARs. Typecast all neccesary fields to INTEGER or DOUBLE instead.
   The query will run on a database with the following schema:
   {schema}
-  Answer: Given the database schema, here is the SQL query that answers [QUESTION]{question}[/QUESTION]. [SQL] <s>
+  Answer: Given the database schema, here is the SQL query that answers [QUESTION]{question}[/QUESTION].
+   [SQL] <s>
   """
 
   response: ChatResponse = chat(model='sqlcoder:latest', messages=[
@@ -50,8 +54,8 @@ def convertSQL():
   # out = process_output(output)
   # db = duckdb.read_json('database.json')
   result = duckdb.sql(output).df()
-  print(result)
-  print(jsonify(result.to_dict(orient='records')))
+  # print(result)
+  # print(jsonify(result.to_dict(orient='records')))
   return jsonify(result.to_dict(orient='records'))
 
 if __name__ == '__main__':

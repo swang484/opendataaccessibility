@@ -121,3 +121,13 @@
     transform: rotate(360deg);
   }
 } */
+
+.App-input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  resize: none;
+  /* Prevents manual resize */
+  box-sizing: border-box;
+}

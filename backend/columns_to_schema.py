@@ -4,7 +4,8 @@ import requests
 type_convert = {
     "text": "VARCHAR",
     "calendar_date": "DATE",
-    "number": "FLOAT"
+    "number": "FLOAT",
+    "location": "VARCHAR"
 }
 
 def form_schema(domain: str, uuid: str, table_name: str = None) -> str:
@@ -12,13 +13,15 @@ def form_schema(domain: str, uuid: str, table_name: str = None) -> str:
     metadata_dict = metadata.json()
 
     columns = metadata_dict["columns"]
-
     table = table_name if table_name is not None else metadata_dict['name'].replace(' ', '_')
     writestr = f"CREATE TABLE {table} (\n"
     for i, c in enumerate(columns):
         ntype = type_convert[c['dataTypeName']] + (',' if i < len(columns) - 1 else '')
-        ndesc = c['description'].replace('\n', '')
-        writestr += f"\t{c['fieldName']} {ntype} --{ndesc}\n"
+        if 'description' in c:
+            ndesc = c['description'].replace('\n', '')
+            writestr += f"\t{c['fieldName']} {ntype} --{ndesc}\n"
+        else:
+            writestr += f"\t{c['fieldName']} {ntype}\n"
 
     writestr += ");"
 

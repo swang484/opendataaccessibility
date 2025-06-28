@@ -56,12 +56,13 @@ function App() {
             value={code}
             onChange={e => setCode(e.target.value)}
           />
-          <input
+          <textarea
             className="App-input"
-            type="text"
             placeholder="Question"
             value={question}
             onChange={e => setQuestion(e.target.value)}
+            rows={3} // 3x taller than a normal input
+            style={{ minHeight: '66px' }} // Optional: further control height
           />
           <button className="App-button" type="submit">Submit</button>
         </form>
